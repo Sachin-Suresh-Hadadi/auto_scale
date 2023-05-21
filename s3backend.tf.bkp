@@ -1,0 +1,28 @@
+resource "aws_s3_bucket" "bucket" {
+  bucket = "sachin-hadadi-state-file"
+  acl    = "private"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+# Create a DynamoDB table for state locking
+resource "aws_dynamodb_table" "dynamodb" {
+  name           = "lock-file"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+
+
+
+
+
+
+
