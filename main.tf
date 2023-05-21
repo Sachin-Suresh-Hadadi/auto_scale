@@ -74,7 +74,7 @@ resource "local_file" "tera" {
 
 # Create Launch Configuration
 resource "aws_launch_configuration" "lc" {
-  name                 = var.instace_name
+  name                 = var.instance_name
   image_id             = var.ami
   instance_type        = var.instance
 
