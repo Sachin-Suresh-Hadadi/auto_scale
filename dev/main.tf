@@ -101,7 +101,7 @@ resource "aws_autoscaling_group" "asg" {
   tags = [
     {
       key                 = "Name"
-      value               = "example-instance"
+      value               = var.instance_name
       propagate_at_launch = true
     },
   ]
