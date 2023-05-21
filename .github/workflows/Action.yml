@@ -3,7 +3,7 @@ name: Terraform Deploy
 on:
   workflow_dispatch:
     inputs:
-      variable_file_path:
+      file_path:
         description: 'Path to the variable file'
         required: true
       operation:
