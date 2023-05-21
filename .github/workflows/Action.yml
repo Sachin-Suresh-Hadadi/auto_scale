@@ -6,6 +6,9 @@ on:
       variable_file_path:
         description: 'Path to the variable file'
         required: true
+      operation:
+        description: 'to create or to destroy'
+        required: true
 
 jobs:
   deploy:
@@ -30,4 +33,4 @@ jobs:
         run: terraform plan -var-file=${{ github.event.inputs.variable_file_path }}
 
       - name: Terraform Apply
-        run: terraform apply -var-file=${{ github.event.inputs.variable_file_path }} -auto-approve
+        run: terraform ${{ github.event.inputs.operation }} -var-file=${{ github.event.inputs.variable_file_path }} -auto-approve
