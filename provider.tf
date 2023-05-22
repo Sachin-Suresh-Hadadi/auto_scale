@@ -11,10 +11,10 @@ terraform {
 terraform {
   backend "s3" {
     bucket         = "sachin-hadadi-state-file"
-    key            = "terraform.tfstate"  # The name of the state file
+    key            = "terraform.tfstate"  
     region         = "ap-south-1"
     encrypt        = true
-    dynamodb_table = "lock-file"  # Optional, for state locking
+    dynamodb_table = "lock-file"  
   }
 }
 

@@ -2,8 +2,6 @@
 
 resource "aws_vpc" "vpc" {
     cidr_block           = "10.0.0.0/16"
-    enable_dns_support   = "true"
-    enable_dns_hostnames = "true"
     tags = {
         Name = "terraform-vpc"
     }
@@ -64,6 +62,7 @@ resource "tls_private_key" "key-gen" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
+
 resource "local_file" "tera" {
   content   = tls_private_key.key-gen.private_key_pem
   filename  = "tera"
@@ -78,7 +77,7 @@ resource "aws_launch_configuration" "lc" {
   image_id             = var.ami
   instance_type        = var.instance
 
-  security_groups      = [aws_security_group.sg.id,aws_security_group.sg2.id]
+  security_groups      = [aws_security_group.sg.id]
   user_data            = <<-EOF
     #!/bin/bash
     apt-get update
@@ -114,59 +113,28 @@ resource "aws_security_group" "sg" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["192.168.1.30/32"]
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["192.168.1.30/32"]
   }
   ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
         cidr_blocks = ["192.168.1.30/32"]
     }
   ingress {
-        from_port = 443
-        to_port = 443
-        protocol = "tcp"
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
         cidr_blocks = ["192.168.1.30/32"]
     }
   egress {
-        from_port = 0
-        to_port = 0
-        protocol = -1
+        from_port   = 0
+        to_port     = 0
+        protocol    = -1
         cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-## Create Security Group
-resource "aws_security_group" "sg2" {
-  name        = "not-secure"
-  description = "not secure"
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-  ingress {
-        from_port = 443
-        to_port = 443
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-  egress {
-        from_port = 0
-        to_port = 0
-        protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
-  }
-}
