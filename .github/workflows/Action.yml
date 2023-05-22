@@ -30,7 +30,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -var-file=${{ github.event.inputs.variable_file_path }}
+        run: terraform plan -var-file=${{ github.event.inputs.file_path }}
 
       - name: Terraform Apply/destroy
-        run: terraform ${{ github.event.inputs.operation }} -var-file=${{ github.event.inputs.variable_file_path }} -auto-approve
+        run: terraform ${{ github.event.inputs.operation }} -var-file=${{ github.event.inputs.file_path }} -auto-approve
